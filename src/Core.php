@@ -27,6 +27,7 @@ use EasySwoole\Utility\File;
 use EasySwoole\Log\Logger as DefaultLogger;
 use EasySwoole\Trigger\Trigger as DefaultTrigger;
 use EasySwoole\Task\Config as TaskConfig;
+use Swoole\Timer;
 
 ////////////////////////////////////////////////////////////////////
 //                          _ooOoo_                               //
@@ -123,7 +124,7 @@ class Core
     {
         //给主进程也命名
         $serverName = Config::getInstance()->getConf('SERVER_NAME');
-        if(PHP_OS != 'Darwin'){
+        if(!in_array(PHP_OS,['Darwin','CYGWIN','WINNT'])){
             cli_set_process_title($serverName);
         }
         //启动
@@ -265,17 +266,20 @@ class Core
             });
         }
 
+        $register = ServerManager::getInstance()->getMainEventRegister();
         //注册默认的worker start
-        EventHelper::registerWithAdd(ServerManager::getInstance()->getMainEventRegister(),EventRegister::onWorkerStart,function (\swoole_server $server,$workerId){
-            if(PHP_OS != 'Darwin'){
+        EventHelper::registerWithAdd($register,EventRegister::onWorkerStart,function (\swoole_server $server,$workerId){
+            if(!in_array(PHP_OS,['Darwin','CYGWIN','WINNT'])){
                 $name = Config::getInstance()->getConf('SERVER_NAME');
                 if( ($workerId < Config::getInstance()->getConf('MAIN_SERVER.SETTING.worker_num')) && $workerId >= 0){
                     $type = 'Worker';
-                }else{
-                    $type = 'TaskWorker';
+                    cli_set_process_title("{$name}.{$type}.{$workerId}");
                 }
-                cli_set_process_title("{$name}.{$type}.{$workerId}");
             }
+        });
+
+        EventHelper::registerWithAdd($register,$register::onWorkerExit,function (){
+            Timer::clearAll();
         });
     }
 

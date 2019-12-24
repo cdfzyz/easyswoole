@@ -2,9 +2,14 @@
     "name": "easyswoole/easyswoole",
     "type": "library",
     "description": "An efficient swoole framework",
-    "keywords" : ["swoole", "framework", "async","easyswoole"],
-    "homepage" : "https://www.easyswoole.com/",
-    "license" : "Apache-2.0",
+    "keywords": [
+        "swoole",
+        "framework",
+        "async",
+        "easyswoole"
+    ],
+    "homepage": "https://www.easyswoole.com/",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "YF",
@@ -14,7 +19,7 @@
     "require": {
         "php": ">=7.1.0",
         "ext-swoole": ">=4.4.4",
-        "easyswoole/component": "^1.0",
+        "easyswoole/component": "^2.0",
         "easyswoole/spl": "^1.0",
         "easyswoole/http": "^1.0",
         "easyswoole/utility": "^1.0",
@@ -27,7 +32,13 @@
     "autoload": {
         "psr-4": {
             "EasySwoole\\EasySwoole\\": "src/",
-            "EasySwoole\\EasySwoole\\Test\\": "tests/"
+            "App\\": "App/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EasySwoole\\EasySwoole\\Test\\": "tests/",
+            "App\\": "App/"
         }
     },
     "require-dev": {

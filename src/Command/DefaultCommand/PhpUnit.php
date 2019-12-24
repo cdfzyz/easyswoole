@@ -25,11 +25,17 @@ class PhpUnit implements CommandInterface
     public function exec(array $args): ?string
     {
         /*
-        * 清除输入变量
+            * 清除输入变量
         */
         global $argv;
-        array_shift($argv);
-        $_SERVER['argv'] = $argv;
+        $temp = $argv;
+        array_shift($temp);
+        $key = array_search('produce',$temp);
+        if($key){
+            unset($temp[$key]);
+        }
+        $_SERVER['argv'] = $temp;
+
         /*
         * 允许自动的执行一些初始化操作，只初始化一次
         */

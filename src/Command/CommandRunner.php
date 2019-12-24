@@ -14,8 +14,10 @@ use EasySwoole\EasySwoole\Command\DefaultCommand\Help;
 use EasySwoole\EasySwoole\Command\DefaultCommand\Install;
 use EasySwoole\EasySwoole\Command\DefaultCommand\PhpUnit;
 use EasySwoole\EasySwoole\Command\DefaultCommand\Reload;
+use EasySwoole\EasySwoole\Command\DefaultCommand\Restart;
 use EasySwoole\EasySwoole\Command\DefaultCommand\Start;
 use EasySwoole\EasySwoole\Command\DefaultCommand\Stop;
+use EasySwoole\EasySwoole\Command\DefaultCommand\Config;
 use EasySwoole\EasySwoole\Core;
 
 class CommandRunner
@@ -30,6 +32,8 @@ class CommandRunner
         CommandContainer::getInstance()->set(new Stop());
         CommandContainer::getInstance()->set(new Reload());
         CommandContainer::getInstance()->set(new PhpUnit());
+        CommandContainer::getInstance()->set(new Restart());
+        CommandContainer::getInstance()->set(new Config());
     }
 
     function run(array $args):?string
